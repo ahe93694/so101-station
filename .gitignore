@@ -1,5 +1,7 @@
 # 每台机器各一份，从 station.env.example 复制
 station.env
+# VS Code SFTP 插件配置，里面有服务器密码
+.vscode/sftp.json
 
 # 体积大，不进 git：数据用 rsync 传，底座模型放 /autodl-fs 或服务器镜像
 /data/
