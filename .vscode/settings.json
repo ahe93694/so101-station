@@ -1,0 +1,9 @@
+{
+  // 让 VS Code 用项目的 conda 环境解析 import（cv2 / torch / lerobot 不再有波浪线）。
+  // conda 不在 ~/miniconda3 的机器：Ctrl+Shift+P → Python: Select Interpreter 选 so101_runtime 即可。
+  "python.defaultInterpreterPath": "${userHome}/miniconda3/envs/so101_runtime/bin/python",
+  "python.terminal.activateEnvironment": true,
+  // 项目自带的 LeRobot 源码，跳转定义时进到这里而不是别处的 lerobot
+  "python.analysis.extraPaths": ["${workspaceFolder}/runtime/lerobot/src"],
+  "python.analysis.typeCheckingMode": "off"
+}

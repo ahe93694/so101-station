@@ -1,0 +1,17 @@
+# 每台机器各一份，从 station.env.example 复制
+station.env
+
+# 体积大，不进 git：数据用 rsync 传，底座模型放 /autodl-fs 或服务器镜像
+/data/
+/models/*
+!/models/paligemma_tokenizer/
+/outputs/
+/logs/
+
+# 缓存与安装产物
+__pycache__/
+*.egg-info/
+.hf_home/
+.lerobot_cache/
+.pip_cache/
+.whl/
