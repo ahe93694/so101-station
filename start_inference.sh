@@ -214,4 +214,4 @@ set -e
 
 echo "lerobot_rollout 退出码: $RC"
 echo "日志: $LOG"
-exit "$RC"❯
+exit "$RC"
