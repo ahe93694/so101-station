@@ -9,14 +9,11 @@ models/pi05_base 微调：
 2. pi05_base 是 HuggingFace 上较新的版本，预处理配置里把相对动作这一步叫
    relative_actions_processor，项目自带的 LeRobot 0.5.2 里同一个类叫 delta_actions_processor，
    不补这个别名就加载不了。保存的 checkpoint 用的是 0.5.2 的名字，推理机照常加载。
-3. 只保留数据集真有的相机。pi05_base 声明了三路相机（smolvla_base 也是 camera1/2/3），我们只有
-   顶部一路，另外两路会被补成掩码掉的空图：注意力看不到、位置编码也跳过，结果和没有一样，但照样过
-   视觉编码器和整个 VLM，白占算力。去掉后输出不变，训练和推理都快一截；checkpoint 里也只剩这一路相机。
-
-多卡时 accelerate 在每张卡上各跑一份本脚本，上面的补丁每个进程都要打。
+3. 只保留数据集真有的相机。pi05_base 声明了三路相机，我们只有顶部一路，另外两路腕部相机会被补成
+   掩码掉的空图：注意力看不到、位置编码也跳过，结果和没有一样，但照样过 SigLIP 和整个 VLM，
+   白占一半算力。去掉后输出不变，训练和推理都快一截；checkpoint 里也只剩这一路相机。
 """
 import logging
-import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -68,7 +65,7 @@ def drop_empty_cameras_on_make_policy() -> None:
     def make_policy(cfg, ds_meta=None, env_cfg=None, rename_map=None):
         if ds_meta is not None and cfg.input_features:
             dropped = drop_empty_cameras(cfg, ds_meta, rename_map)
-            if dropped and os.environ.get("RANK", "0") == "0":
+            if dropped:
                 logging.info(f"数据集里没有这些相机，不再补空图: {dropped}")
         return orig(cfg, ds_meta=ds_meta, env_cfg=env_cfg, rename_map=rename_map)
 
